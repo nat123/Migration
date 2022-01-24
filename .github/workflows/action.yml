@@ -1,1 +1,18 @@
-
+name: Build Application Code
+on:
+ push:
+  branches:
+      - main
+ workflow_call:
+    inputs:
+      projectName:
+        description: 'name of Project'
+        default: 'edl-core-grants'
+        required: true
+        type: string
+        
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+        
+  
