@@ -1,8 +1,14 @@
-name: Build Application Code
+name: CI code for Edl-core-grants
 on:
-# push:
+ push:
   branches:
       - main
+env:
+  projectName: "edl-core-grants" 
+  snowChangeCreated: false
+  assignmentGroup: "AE EDL Support"
+  configItem: "aws-ae-databricks-prod.${projectName}" 
+  baseUrl: "https://github.deere.com/EDL/${projectName}"
 jobs:
   BuildOnDev:
     runs-on: ubuntu-latest
@@ -29,7 +35,7 @@ jobs:
             sh 'sh deploy.sh "EDL Add Grant Permissions Job - devl" jobs_devl external'
             sh 'sh deploy.sh "EDL Add Grant Permissions Job Async - devl" async_job_devl external'
             sleep 10
-    BuildOnProd:
+  BuildOnProd:
       runs-on: ubuntu-latest
       needs: BuildOnDev
       if: github.ref == 'refs/heads/master'
@@ -39,6 +45,31 @@ jobs:
                 sh 'python3 setup.py sdist bdist_wheel'
                 sh 'aws s3 cp ./dist/grantTasks-1.0-py3-none-any.whl s3://jd-us01-edl-databricks-artifacts-prod/edl-core-grants/dist/grantTasks-1.0-py3-none-any.whl --sse'
                 sh 'aws s3 cp ./Notebooks/services/async_grants.py s3://jd-us01-edl-databricks-artifacts-prod/edl-core-grants/async_grants.py --sse'
+  Job4:
+        runs-on: ubuntu-latest
+        needs: BuildOnProd
+        if: github.ref == 'refs/heads/master'
+        steps:
+          - run: |
+             sh 'sh deployNotebooks.sh prod external' 
+                sh 'sh deployNotebooks.sh prod isg'
+                sh 'sh deployNotebooks.sh prod edl'
+                sh 'sh deployNotebooks.sh prod expalert'
+                
+                
+  Job5:
+      runs-on: ubuntu-latest
+      needs: Job4
+      if: github.ref == 'refs/heads/master'
+      steps:
+          - run: |
+             sh 'sh deploy.sh "EDL Add Grant Permissions Job - prod" jobs_external_prod external'
+                sh 'sh deploy.sh "EDL Add Grant Permissions Job Async - prod" async_job_prod external'
+                sh 'sh deploy.sh "EDL Add Grant Permissions Job - prod" jobs_isg_prod isg'
+                sh 'sh deploy.sh "EDL Add Grant Permissions Job - prod" jobs_edl_prod edl'
+                sh 'sh deploy.sh "EDL Add Grant Permissions Job - prod" jobs_expalert_prod expalert'
+    
+      
       
         
        
