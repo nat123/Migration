@@ -1,13 +1,50 @@
 name: Build Application Code
 on:
- push:
+# push:
   branches:
       - main
 jobs:
-  Build:
+  BuildOnDev:
     runs-on: ubuntu-latest
     steps:
+       - name: checkout code
        - uses: actions/checkout@v2
        - run: echo "Hello World"
+       - name: Configure AWS Credentials
+         uses: aws-actions/configure-aws-credentials@v1
+         with:
+           role-to-assume: arn:aws:iam::123456789100:role/my-github-actions-role
+           aws-region: us-east-2
+       - run: |
+           sh 'python3 -m pip install --user --upgrade setuptools wheel'
+                sh 'python3 setup.py sdist bdist_wheel'
+                sh 'aws s3 cp ./dist/grantTasks-1.0-py3-none-any.whl s3://jd-us01-edl-databricks-artifacts-devl/edl-core-grants/dist/grantTasks-1.0-py3-none-any.whl --sse'
+                sh 'aws s3 cp ./Notebooks/services/async_grants.py s3://jd-us01-edl-databricks-artifacts-devl/edl-core-grants/async_grants.py --sse'
+       - name: Publish devl grants notebooks
+       - run: |
+           sh deployNotebooks.sh devl external
+           
+       - name: Create dev cron Job
+       - run: |
+            sh 'sh deploy.sh "EDL Add Grant Permissions Job - devl" jobs_devl external'
+            sh 'sh deploy.sh "EDL Add Grant Permissions Job Async - devl" async_job_devl external'
+            sleep 10
+    BuildOnProd:
+      runs-on: ubuntu-latest
+      needs: BuildOnDev
+      if: github.ref == 'refs/heads/master'
+      steps:
+         - run: |
+            sh 'python3 -m pip install --user --upgrade setuptools wheel'
+                sh 'python3 setup.py sdist bdist_wheel'
+                sh 'aws s3 cp ./dist/grantTasks-1.0-py3-none-any.whl s3://jd-us01-edl-databricks-artifacts-prod/edl-core-grants/dist/grantTasks-1.0-py3-none-any.whl --sse'
+                sh 'aws s3 cp ./Notebooks/services/async_grants.py s3://jd-us01-edl-databricks-artifacts-prod/edl-core-grants/async_grants.py --sse'
+      
         
+       
+     
+        
+     
+           
+       
   
