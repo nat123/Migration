@@ -3,16 +3,11 @@ on:
  push:
   branches:
       - main
- workflow_call:
-    inputs:
-      projectName:
-        description: 'name of Project'
-        default: 'edl-core-grants'
-        required: true
-        type: string
-        
 jobs:
   Build:
     runs-on: ubuntu-latest
+    steps:
+       - uses: actions/checkout@v2
+       - run: echo "Hello World"
         
   
