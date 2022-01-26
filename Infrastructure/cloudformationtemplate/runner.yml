@@ -1,0 +1,77 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Parameters: 
+    Ec2ImageId:
+        Description: EC2 Image Id
+        Type: String
+        Default: ami-002ae9db184628899
+    Ec2InstaceProfile:
+        Description: Instance profile for github runner
+        Type: String
+        Default: arn:aws:iam::362024894964:instance-profile/jenkins/appslave-jenkins-edlingest
+    PrivateSubnet0:
+        Description: Private Subnet 0
+        Type: String
+        Default: subnet-07b79bf6638842732
+    PrivateSubnet1:
+        Description: Private Subnet 1
+        Type: String
+        Default: subnet-021c6ec3dad2f49aa
+    DeereSshSecurityGroup:
+        Description: Deere ssh security group
+        Type: String
+        Default: sg-0733deb1a6cace417
+
+Resources:
+    GithubRunnerASG:
+      Type: "AWS::AutoScaling::AutoScalingGroup"
+      Properties:
+        MinSize: 1
+        MaxSize: 1
+        HealthCheckType: EC2
+        HealthCheckGracePeriod: 600
+        DesiredCapacity: 1
+        LaunchConfigurationName:
+            Ref: GithubRunnerLaunchConfig
+        VPCZoneIdentifier:
+            - Ref: PrivateSubnet0
+            - Ref: PrivateSubnet1
+        Tags:
+            -
+              PropagateAtLaunch: true
+              Key: Name
+              Value: GithubRunner-EC2
+            -
+              PropagateAtLaunch: true
+              Key: component
+              Value: ae-edl-ingest
+
+    GithubRunnerLaunchConfig: 
+      Type: "AWS::AutoScaling::LaunchConfiguration"
+      Properties:
+        InstanceType: m5.large
+        IamInstanceProfile: 
+          Ref: Ec2InstaceProfile
+        AssociatePublicIpAddress: false
+        KeyName: edl-ingest-ec2
+        SecurityGroups: 
+          - Ref: DeereSshSecurityGroup
+        ImageId: 
+          Ref: Ec2ImageId
+        UserData:
+          Fn::Base64:
+            !Sub |
+              #!/bin/bash -xe
+              echo 'export PATH=/opt/github/actions-runner:$PATH' >> /home/ec2-user/.bash_profile
+              sudo yum install -y docker jq
+              pip3 install iacscanner==0.3.1 -i https://pypi.deere.com/simple
+              sudo systemctl start docker
+              sudo usermod -aG docker ec2-user
+              aws s3 cp s3://aws-gsec-sharedservices-prod-security-agents/security_install.sh - | bash
+              sudo curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
+        BlockDeviceMappings: 
+            -
+              DeviceName: /dev/xvda
+              Ebs: 
+                VolumeSize: 100
+                VolumeType: gp2
+                DeleteOnTermination: true
