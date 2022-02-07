@@ -8,4 +8,4 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - run: echo "Hello how are you"
+      - run: echo "Hello how are you doing"
