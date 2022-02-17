@@ -1,0 +1,43 @@
+name: edl-storage-service
+on:
+  workflow_dispatch
+env:
+  projectName: "edl-storage-service"
+  isPullRequest: BRANCH_NAME ==~ /PR-([0-9]+)/
+  devApproved: false
+  prodApproved: false
+  snowChangeCreated: false
+  assignmentGroup: "AE EDL Support"
+  configItem: "jd-us01-commoninformationservices-prod.${projectName}"
+  baseUrl: "https://github.deere.com/EDL/${projectName}"
+  
+jobs:
+   build:
+    name: build
+    runs-on: [ master]
+    env:
+      SRCCLR_API_TOKEN:     ${{ secrets.SRCCLR_API_TOKEN }}
+      PRISMA_CREDS:        ${{ secrets.PRISMA_ID}}
+      PATH = "/var/jenkins_home/.local/bin:/home/linuxbrew/.linuxbrew/bin:${env.PATH}"
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14.x
+  
+
+jobs:
+  name: Request dev deployment
+    runs-on: [master]
+    steps:
+      - uses: actions/checkout@v2
+      run: | 
+         if github.ref == 'refs/heads/master'
+            env$(devApproved)='true'
+         if github.ref == env.$IsPullRequest
+             env$(devApproved)='false'
+         if github.ref =! env.$IsPullRequest
+             env$(devApproved) = isApproved('dev')
+
+ DeploygluejobProd:
+   runs-on: [ github-prod ]
