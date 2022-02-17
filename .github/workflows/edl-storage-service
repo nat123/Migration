@@ -38,6 +38,35 @@ jobs:
              env$(devApproved)='false'
          if github.ref =! env.$IsPullRequest
              env$(devApproved) = isApproved('dev')
+         echo "env.$(devApproved): ${env.$(devApproved}"
+         
+     name: Request prod deployment
+        runs-on: [master]
+        steps:
+           run: |
+           if github.ref == 'refs/heads/master'
+           prodApproved = isApproved('prod') 
+      name: Test
+         steps: 
+           run: |
+              npm install
+              npm test
+              npm run lint
+              
+       name: SonarQube Analysis
+         steps:
+           if: github.ref == 'refs/heads/master'
+           run: |
+             scannerHome = tool 'JDSonarQube'
+             withSonarQubeEnv('JDSonarQube') {
+                    sh "${scannerHome}/bin/sonar-scanner"
+                }
+                
+        name: Veracode SCA 
+           steps:
+              if: github.ref == 'refs/heads/master'
+              run: |
+                  curl -sSL https://download.sourceclear.com/ci.sh | sh
+        
 
- DeploygluejobProd:
-   runs-on: [ github-prod ]
+ 
