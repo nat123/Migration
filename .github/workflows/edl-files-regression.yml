@@ -23,7 +23,7 @@ jobs:
         run: |
            echo "Testing..."
            echo  "${params.ENVIRONMENT}"
-           sh "${tool name: 'sbt-1.1.1', type: 'org.jvnet.hudson.plugins.SbtPluginBuilder$SbtInstallation'}/bin/sbt  -DBuild_Environment=${env.ENVIRONMENT} it:test"
+          # sh "${tool name: 'sbt-1.1.1', type: 'org.jvnet.hudson.plugins.SbtPluginBuilder$SbtInstallation'}/bin/sbt  -DBuild_Environment=${env.ENVIRONMENT} it:test"
      
       - name: Send mail
         if: failure()
@@ -40,6 +40,6 @@ jobs:
           # email body as text
            body: ${{ github.job }} job in worflow ${{ github.workflow }} of ${{ github.repository }} has ${{ job.status }}
           # comma-separated string, send email to
-           to: vasketravisj@JohnDeere.com
+           to: natasha85.chaturvedi@gmail.com
          # from email name
-           from: natasha.a.chaturvedi@accenture.com
+           from: natasha85.chaturvedi@gmail.com
