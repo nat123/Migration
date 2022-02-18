@@ -2,10 +2,12 @@ name: edl-files-regression
 on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
- 
- 
+    inputs:
+      environment:
+        description: 'Define env name'     
+        required: true
+        default: 'ubuntu-latest'
 env:
-  ENVIRONMENT: ubuntu-latest
   ARTIFACTORY_USER: ${{secrets.CIS_ARTIFACTORY_USER}}
   ARTIFACTORY_API_KEY: ${{secrets.CIS_ARTIFACTORY_API_KEY}}
   CIS_DEVL_AUTH_CLIENT_ID: ${{secrets.CIS_DEVL_AUTH_CLIENT_ID}}
@@ -16,7 +18,7 @@ env:
 jobs:
    edl-files-regression:
      name: edl-files-regression
-     runs-on: ubuntu-latest
+     runs-on: "${{ github.event.inputs.environment }}" 
      steps:
       - name: Checkout
         uses: actions/checkout@v2.4.0
