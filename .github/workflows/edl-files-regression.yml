@@ -25,7 +25,7 @@ jobs:
         run: |
            echo "Testing..."
            echo  ${{env.ENVIRONMENT}}
-          # sh "${tool name: 'sbt-1.1.1', type: 'org.jvnet.hudson.plugins.SbtPluginBuilder$SbtInstallation'}/bin/sbt  -DBuild_Environment=${{env.ENVIRONMENT}} it:test"
+           sh "${tool name: 'sbt-1.1.1', type: 'org.jvnet.hudson.plugins.SbtPluginBuilder$SbtInstallation'}/bin/sbt  -DBuild_Environment=${{env.ENVIRONMENT}} it:test"
      
       - name: Send mail
         if: failure()
