@@ -35,12 +35,18 @@ jobs:
       - uses: Jtalk/setup-sbt@v1
         with:
            version: 1.5.4
-      - name: Build and Integration Test
-        shell: bash
-        run: |
-           echo "Testing..."
-           echo "${{ github.event.inputs.environment }}"
-           sbt -v 
+   requestdevdeployment:
+      name: request dev deployment
+      runs-on: "${{ github.event.inputs.environment }}" 
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v2.4.0
+        - bash : |
+          
+          
+    
+     
+         
   
   
 
