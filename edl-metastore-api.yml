@@ -1,0 +1,28 @@
+name: edl-metastore-api
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Define env name'     
+        required: true
+        default: 'ubuntu-latest'
+env:
+  projectName: "edl-metastore-api"
+  isPullRequest: BRANCH_NAME ==~ /PR-([0-9]+)/
+  devApproved: false
+  prodApproved: false
+  shortCommit: ""
+  snowChangeCreated: false
+  assignmentGroup: "AE EDL Support"
+  configItem: "aws-ghns-cis-prod-useast1-vpn.${projectName}"
+  baseUrl: "https://github.deere.com/EDL/${projectName}"
+  ARTIFACTORY_USER: ${{secrets.CIS_ARTIFACTORY_USER}}
+  ARTIFACTORY_API_KEY: ${{secrets.CIS_ARTIFACTORY_API_KEY}}
+  CIS_DEVL_AUTH_CLIENT_ID: ${{secrets.CIS_DEVL_AUTH_CLIENT_ID}}
+  CIS_DEVL_AUTH_CLIENT_SECRET: ${{secrets.CIS_DEVL_AUTH_CLIENT_SECRET}}
+  CIS_PROD_AUTH_CLIENT_ID: ${{secrets.CIS_PROD_AUTH_CLIENT_ID}}
+  CIS_PROD_AUTH_CLIENT_SECRET: ${{secrets.CIS_PROD_AUTH_CLIENT_SECRET}}
+  SRCCLR_API_TOKEN: ${{secrets.SRCCLR_API_TOKEN}}
+  
+jobs:
