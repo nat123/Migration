@@ -41,9 +41,7 @@ jobs:
       steps:
         - name: Checkout
           uses: actions/checkout@v2.4.0
-        - name: script
-          shell: |
-            echo "devApproved: ${devApproved}"
+        
           
             
           
