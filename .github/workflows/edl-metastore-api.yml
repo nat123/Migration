@@ -42,11 +42,10 @@ jobs:
         - name: Checkout
           uses: actions/checkout@v2.4.0
         - name: script
-          bash: |
+          shell: |
             echo "devApproved: ${devApproved}"
           
-            |
-           echo "devApproved: ${devApproved}"
+            
           
           
     
