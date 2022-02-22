@@ -38,9 +38,16 @@ jobs:
    requestdevdeployment:
       name: request dev deployment
       runs-on: "${{ github.event.inputs.environment }}" 
+      if: github.ref == 'refs/heads/master'
       steps:
-        - name: Checkout
-          uses: actions/checkout@v2.4.0
+        - uses: haya14busa/action-cond@v1
+          id: devApproved
+          with:
+            cond: ${{ github.ref == 'refs/heads/master' }}
+            if_true: "true"
+            if_false: "dev"
+        - name: Use conditional value
+          run: echo "${{ steps.devApproved.outputs.value }}"  
         
           
             
