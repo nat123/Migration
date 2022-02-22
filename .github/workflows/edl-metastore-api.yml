@@ -38,7 +38,6 @@ jobs:
    requestdevdeployment:
       name: request dev deployment
       runs-on: "${{ github.event.inputs.environment }}" 
-      if: github.ref == 'refs/heads/master'
       steps:
         - uses: haya14busa/action-cond@v1
           id: devApproved
