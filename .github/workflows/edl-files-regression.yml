@@ -20,6 +20,7 @@ jobs:
      name: edl-files-regression
      runs-on: "${{ github.event.inputs.environment }}" 
      steps:
+      - uses: actions/checkout@v2
       - uses: nat123/ActionTemplates-/.github/actions/SBT Install/action.yml@main
       - name: Build and Integration Test
         shell: bash
