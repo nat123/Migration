@@ -20,21 +20,23 @@ jobs:
      name: edl-files-regression
      runs-on: "${{ github.event.inputs.environment }}" 
      steps:
-      - uses: actions/checkout@v2
-        with:
+       - name: Checkout
+         uses: actions/checkout@v2
+         with:
           repository: nat123/ActionTemplates-
-      - uses: nat123/ActionTemplates-/.github/actions/SBT Install/action.yml@main
-      - name: Build and Integration Test
-        shell: bash
-        run: |
+       - uses: nat123/ActionTemplates-/.github/actions/SBT Install/action.yml@main
+       
+       - name: Build and Integration Test
+         shell: bash
+         run: |
            echo "Testing..."
            echo "${{ github.event.inputs.environment }}"
            sbt -v +test
 # sh "${tool name: 'sbt-1.1.1', type: 'org.jvnet.hudson.plugins.SbtPluginBuilder$SbtInstallation'}/bin/sbt  -DBuild_Environment=${{env.ENVIRONMENT}} it:test"
-      - name: Send mail
-        if: failure()
-        uses: dawidd6/action-send-mail@v2
-        with:
+       - name: Send mail
+         if: failure()
+         uses: dawidd6/action-send-mail@v2
+         with:
            # mail server settings
            server_address: smtp.gmail.com
            server_port: 465
