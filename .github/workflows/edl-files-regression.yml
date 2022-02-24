@@ -24,7 +24,7 @@ jobs:
          uses: actions/checkout@v2
          with:
           repository: nat123/ActionTemplates-
-       - uses: nat123/ActionTemplates-/.github/actions/SBT Install/action.yml@main
+       - uses: nat123/ActionTemplates-/.github/actions/SBT Install@main
        
        - name: Build and Integration Test
          shell: bash
