@@ -7,6 +7,11 @@ on:
         description: 'Define env name'     
         required: true
         default: 'ubuntu-latest'
+    
+      sbt-version: 
+        description: 'The sbt version to use'
+        default: '1.1.1'
+        required: false
 env:
   ARTIFACTORY_USER: ${{secrets.CIS_ARTIFACTORY_USER}}
   ARTIFACTORY_API_KEY: ${{secrets.CIS_ARTIFACTORY_API_KEY}}
