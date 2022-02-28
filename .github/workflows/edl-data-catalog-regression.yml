@@ -7,20 +7,21 @@ on:
         description: 'Define env name'     
         required: true
         default: 'ubuntu-latest'
-      nvironment:
-        description: 'Define env name'     
+      LAKERS:
+        description: 'Select true if lakers environment'     
         required: true
-        default: 'ubuntu-latest'
+        default: 'false'
 env:
   ARTIFACTORY_USER: ${{secrets.CIS_ARTIFACTORY_USER}}
   
 jobs:
   runs-on: "${{ github.event.inputs.environment}}"
   steps:
-    name: Checkout
-    uses: actions/checkout@v2.4.0
-    name: Nodejs
-    uses: actions/setup-node@v3.0.0
-    with:
+    - name: Checkout
+      uses: actions/checkout@v2.4.0
+    
+    - name: Nodejs
+      uses: actions/setup-node@v3.0.0
+      with:
       node-version: 'NodeJS2_12.13.0'
      
