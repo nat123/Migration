@@ -32,4 +32,26 @@ jobs:
         uses: actions/setup-node@v3.0.0
         with:
           node-version: '12.13.0'
+   Build and run devl regression tests:
+    if: github.event.inputs.environment == 'ubuntu-latest'
+    steps:
+       with:
+       DEV_CATALOG_READ_SECRET: ${{secrets.DEV_CATALOG_READ_SECRET}}
+       DEV_CATALOG_WRITE_SECRET: ${{DEV_CATALOG_WRITE_SECRET}}
+       DEV_CATALOG_ADMIN_SECRET: ${{DEV_CATALOG_ADMIN_SECRET}}
+       env:
+            "DEV_CATALOG_READ_SECRET=${DEV_CATALOG_READ_SECRET}",
+            "DEV_CATALOG_ADMIN_SECRET=${DEV_CATALOG_ADMIN_SECRET}",
+            "DEV_CATALOG_WRITE_SECRET=${DEV_CATALOG_WRITE_SECRET}"
+          ]) {
+            sh '''
+              npm i
+              echo  "${ENVIRONMENT}"
+              npm run regression
+            '''
+          }
+        }
+      }
+    }
+
      
