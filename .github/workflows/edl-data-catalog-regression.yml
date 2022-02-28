@@ -32,8 +32,8 @@ jobs:
         uses: actions/setup-node@v3.0.0
         with:
           node-version: '12.13.0'
-   Buildandrundevlregressiontests:
-    name: Build and run devl regression tests
+   Build-and-run-devl-regression-tests:
+    name: Build-and-run-devl-regression-tests
     runs-on: ubuntu-latest
     if: ${{github.event.inputs.environment == 'ubuntu-latest'}}
     steps:
@@ -49,6 +49,23 @@ jobs:
             npm i
             echo  ${{github.event.inputs.environment}}
             npm run regression
+    Build-and-run-prod-regression-tests:
+      name: Build-and-run-prod-regression-tests
+      runs-on: ubuntu-20.04
+      if: ${{github.event.inputs.environment == 'ubuntu-20.04'}}
+      steps:
+       - with:
+           PROD_CATALOG_READ_SECRET: ${{secrets.PROD_CATALOG_READ_SECRET}}
+           PROD_CATALOG_WRITE_SECRET: ${{secrets.PROD_CATALOG_WRITE_SECRET}}
+           PROD_CATALOG_ADMIN_SECRET: ${{secrets.PROD_CATALOG_ADMIN_SECRET}}
+         env:
+           PROD_CATALOG_READ_SECRET: ${{secrets.PROD_CATALOG_READ_SECRET}}
+           PROD_CATALOG_ADMIN_SECRET: ${{secrets.PROD_CATALOG_ADMIN_SECRET}}
+           PROD_CATALOG_WRITE_SECRET: ${{secrets.PROD_CATALOG_WRITE_SECRET}}
+           run: |
+            npm i
+            echo  ${{github.event.inputs.environment}}
+            npm run regression 
             
 
      
