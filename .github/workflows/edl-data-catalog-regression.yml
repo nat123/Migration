@@ -7,16 +7,22 @@ on:
         description: 'Define env name'     
         required: true
         default: 'ubuntu-latest'
+        type: choice
+        options:
+        - ubuntu-latest
+        - ubuntu-20.04
+        
       LAKERS:
         description: 'Select true if lakers environment'     
         required: true
         default: 'false'
 env:
-  ARTIFACTORY_USER: ${{secrets.CIS_ARTIFACTORY_USER}}
+  SRCCLR_API_TOKEN: ${{secrets.SRCCLR_API_TOKEN}}
+  
   
 jobs:
-  edl-files-regression:
-     name: edl-files-regression
+   edl-data-catalog-regression:
+     name: edl-data-catalog-regression
      runs-on: "${{ github.event.inputs.environment}}"
      steps:
       - name: Checkout
