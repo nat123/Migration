@@ -25,5 +25,5 @@ jobs:
       - name: Nodejs
         uses: actions/setup-node@v3.0.0
         with:
-          node-version: 'NodeJS2_12.13.0'
+          node-version: '2_12.13.0'
      
