@@ -23,7 +23,7 @@ env:
 jobs:
    edl-data-catalog-regression:
      name: edl-data-catalog-regression
-     runs-on: "${{ github.event.inputs.environment}}"
+     runs-on: ${{ github.event.inputs.environment}}
      steps:
       - name: Checkout
         uses: actions/checkout@v2.4.0
@@ -34,7 +34,7 @@ jobs:
           node-version: '12.13.0'
    Build-and-run-devl-regression-tests:
     name: Build-and-run-devl-regression-tests
-    runs-on: ubuntu-latest
+    runs-on:  ${{ github.event.inputs.environment}}
     if: ${{github.event.inputs.environment == 'ubuntu-latest'}}
     steps:
      - with:
@@ -49,9 +49,10 @@ jobs:
             npm i
             echo  ${{github.event.inputs.environment}}
             npm run regression
-    Build-and-run-prod-regression-tests:
+   
+   Build-and-run-prod-regression-tests:
       name: Build-and-run-prod-regression-tests
-      runs-on: ubuntu-20.04
+      runs-on:  ${{ github.event.inputs.environment}}
       if: ${{github.event.inputs.environment == 'ubuntu-20.04'}}
       steps:
        - with:
