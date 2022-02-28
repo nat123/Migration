@@ -22,7 +22,7 @@ jobs:
      steps:
        - uses: nat123/ActionTemplates-/.github/actions/SBT Install@main
          with:
-          sbt-version: '1.1.1'
+          version: '1.1.1'
        
        - name: Build and Integration Test
          shell: bash
