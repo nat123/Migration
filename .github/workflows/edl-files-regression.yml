@@ -7,11 +7,6 @@ on:
         description: 'Define env name'     
         required: true
         default: 'ubuntu-latest'
-    
-      sbt-version: 
-        description: 'The sbt version to use'
-        default: '1.1.1'
-        required: false
 env:
   ARTIFACTORY_USER: ${{secrets.CIS_ARTIFACTORY_USER}}
   ARTIFACTORY_API_KEY: ${{secrets.CIS_ARTIFACTORY_API_KEY}}
@@ -26,6 +21,8 @@ jobs:
      runs-on: "${{ github.event.inputs.environment }}" 
      steps:
        - uses: nat123/ActionTemplates-/.github/actions/SBT Install@main
+         with:
+          sbt-version: '5.0.1'
        
        - name: Build and Integration Test
          shell: bash
