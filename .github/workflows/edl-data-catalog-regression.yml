@@ -1,0 +1,21 @@
+name: edl-data-catalog-regression
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Define env name'     
+        required: true
+        default: 'ubuntu-latest'
+env:
+  ARTIFACTORY_USER: ${{secrets.CIS_ARTIFACTORY_USER}}
+  ARTIFACTORY_API_KEY: ${{secrets.CIS_ARTIFACTORY_API_KEY}}
+  CIS_DEVL_AUTH_CLIENT_ID: ${{secrets.CIS_DEVL_AUTH_CLIENT_ID}}
+  CIS_DEVL_AUTH_CLIENT_SECRET: ${{secrets.CIS_DEVL_AUTH_CLIENT_SECRET}}
+  CIS_PROD_AUTH_CLIENT_ID: ${{secrets.CIS_PROD_AUTH_CLIENT_ID}}
+  CIS_PROD_AUTH_CLIENT_SECRET: ${{secrets.CIS_PROD_AUTH_CLIENT_SECRET}}
+  
+jobs:
+   edl-files-regression:
+     name: edl-files-regression
+     runs-on: "${{ github.event.inputs.environment }}" 
