@@ -34,11 +34,11 @@ jobs:
           node-version: '12.13.0'
    Build-and-run-devl-regression-tests:
     name: Build-and-run-devl-regression-tests
-    runs-on:  ${{ github.event.inputs.environment}}
     if: ${{github.event.inputs.environment == 'ubuntu-latest'}}
+    runs-on: ${{github.event.inputs.environment}} 
     steps:
      - uses: actions/checkout@v1
-     - with:
+       with:
         DEV_CATALOG_READ_SECRET: ${{secrets.DEV_CATALOG_READ_SECRET}}
         DEV_CATALOG_WRITE_SECRET: ${{secrets.DEV_CATALOG_WRITE_SECRET}}
         DEV_CATALOG_ADMIN_SECRET: ${{secrets.DEV_CATALOG_ADMIN_SECRET}}
@@ -53,11 +53,11 @@ jobs:
    
    Build-and-run-prod-regression-tests:
       name: Build-and-run-prod-regression-tests
-      runs-on:  ${{ github.event.inputs.environment}}
       if: ${{github.event.inputs.environment == 'ubuntu-20.04'}}
+      runs-on:  ${{ github.event.inputs.environment}}
       steps:
        - uses: actions/checkout@v1
-       - with:
+         with:
            PROD_CATALOG_READ_SECRET: ${{secrets.PROD_CATALOG_READ_SECRET}}
            PROD_CATALOG_WRITE_SECRET: ${{secrets.PROD_CATALOG_WRITE_SECRET}}
            PROD_CATALOG_ADMIN_SECRET: ${{secrets.PROD_CATALOG_ADMIN_SECRET}}
