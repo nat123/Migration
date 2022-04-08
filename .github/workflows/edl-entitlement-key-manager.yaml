@@ -6,4 +6,6 @@ env:
   CIS_DEVL_AWS_ACCT: ${{secrets.CIS_DEVL_AWS_ACCT}}
   CIS_PROD_AWS_ACCT: ${{secrets.CIS_PROD_AWS_ACCT}}
   CIS_AWS_REGION: ${{secrets.IS_AWS_REGION}}
+  willDeployToLowerEnvironments: false 
+  BRANCH_NAME: 'master'
   
