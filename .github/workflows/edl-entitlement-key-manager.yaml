@@ -12,3 +12,12 @@ env:
   region: env.CIS_AWS_REGION
   environments: devl,prod
   
+jobs:
+  edl-entitlement-key-manager:
+     name: edl-entitlement-key-manager
+     runs-on: "${{ github.event.inputs.environment }}" 
+     steps:
+       - uses: nat123/ActionTemplates-/.github/actions/SBT Install@main
+         with:
+          sbt-version: '0.13.15'
+  
