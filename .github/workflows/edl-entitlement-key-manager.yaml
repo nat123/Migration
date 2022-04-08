@@ -1,1 +1,9 @@
-vjhgjkh,k
+name: edl-entitlement-key-manager
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+env:
+  CIS_DEVL_AWS_ACCT: ${{secrets.CIS_DEVL_AWS_ACCT}}
+  CIS_PROD_AWS_ACCT: ${{secrets.CIS_PROD_AWS_ACCT}}
+  CIS_AWS_REGION: ${{secrets.IS_AWS_REGION}}
+  
