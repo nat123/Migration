@@ -8,4 +8,7 @@ env:
   CIS_AWS_REGION: ${{secrets.IS_AWS_REGION}}
   willDeployToLowerEnvironments: false 
   BRANCH_NAME: 'master'
+  project_name: "edl-entitlement-key-manager"
+  region: env.CIS_AWS_REGION
+  environments: devl,prod
   
