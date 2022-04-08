@@ -1,0 +1,64 @@
+function x(Closure $try, array $catch = array(), Closure $finally = null)
+{
+    if (!$catch && !$finally) {
+        $logic = $try;
+    } else {
+        $logic = function() use($try, $catch, $finally) {
+            $caught = null;
+
+            try {
+                $try();
+            } catch (Exception $e) {
+                foreach ($catch as $exception => $action) {
+                    if ($e instanceof $exception && $action instanceof Closure) {
+                        $action($e);
+                        $caught = $e;
+                        break;
+                    }
+                }
+
+                if (!$caught) {
+                    throw $e;
+                }
+            }
+
+            $finally($caught);
+        };
+    }
+
+    $logic();
+}
+
+// EXAMPLE --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+x(function() {
+    // try
+    switch (rand(1,5)) {
+        case 1:
+            echo "No exception was thrown!\n";
+            break;
+
+        case 2:
+            throw new \RuntimeException('A runtime exception');
+
+        case 3:
+            throw new \OutOfBoundsException('An out-of-bounds exception');
+
+        case 4:
+            throw new \Exception('A plain exception');
+
+        case 5:
+            throw new \InvalidArgumentException('An invalid argument exception');
+   }
+}, array(
+    // catch (multiple)
+    'RuntimeException' => function($e) {
+        echo $e->getMessage()." was just caught during runtime.\n";
+    },
+    'Exception' => function($e) {
+        echo $e->getMessage()." was just caught.\n";
+    },
+), function($e) {
+    // finally
+    echo $e ? "Your function call failed.\n" : "Your function call succeeded!\n";
+});
