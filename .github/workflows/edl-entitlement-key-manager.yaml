@@ -1,7 +1,9 @@
 name: edl-entitlement-key-manager
 on:
+ schedule:
+    - cron:  '01 00 * * *'
   # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+ workflow_dispatch:
 env:
   CIS_DEVL_AWS_ACCT: ${{secrets.CIS_DEVL_AWS_ACCT}}
   CIS_PROD_AWS_ACCT: ${{secrets.CIS_PROD_AWS_ACCT}}
@@ -13,10 +15,18 @@ env:
   environments: devl,prod
   
 jobs:
-  edl-entitlement-key-manager:
-     name: edl-entitlement-key-manager
-     runs-on: "${{ github.event.inputs.environment }}" 
-     steps:
+  Deployment Setup:
+   name: Development Setup
+   runs-on: "${{ github.event.inputs.environment }}" 
+   steps:
+    - uses: actions/checkout@v2
+        ${{ env.GITHUB_WORKSPACE }}/environments.yml
+    
+     
+ Veracode SCA:
+    
+      
+       
        - uses: nat123/ActionTemplates-/.github/actions/SBT Install@main
          with:
           sbt-version: '0.13.15'
