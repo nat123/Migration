@@ -20,6 +20,6 @@ jobs:
    runs-on: ubuntu-latest
    steps:
     - uses: actions/checkout@v2
-        ${{ env.GITHUB_WORKSPACE }}/environments.yml
+       
     
    
