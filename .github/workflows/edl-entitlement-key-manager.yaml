@@ -40,7 +40,7 @@ jobs:
         run: echo $url
       
          
-      def willDeployToProd = BRANCH_NAME == 'master' && (url == "git@github.deere.com:EDL/${project_name}.git" || url == "https://github.deere.com/EDL/${project_name}.git")
+      
       
        
     
