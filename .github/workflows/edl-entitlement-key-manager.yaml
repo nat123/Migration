@@ -11,7 +11,7 @@ env:
   CIS_PROD_AWS_ACCT: ${{secrets.CIS_PROD_AWS_ACCT}}
   CIS_AWS_REGION: ${{secrets.IS_AWS_REGION}}
   project_name: "edl-entitlement-key-manager"
-  region: env.CIS_AWS_REGION
+  region: CIS_AWS_REGION
 jobs:
    DeploymentSetup:
      name: DeploymentSetup
@@ -28,7 +28,7 @@ jobs:
    Veracodesca:
      name: Veracodesca
      runs-on: ubuntu-latest
-     if: ${{${{env.willDeployToLowerEnvironments}} == 'true' }}
+     if: ${{ $willDeployToLowerEnvironments == 'true' }}
      steps:
       - uses: actions/checkout@v2
       - name: Set env
