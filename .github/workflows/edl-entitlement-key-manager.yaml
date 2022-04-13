@@ -12,13 +12,12 @@ env:
   CIS_AWS_REGION: ${{secrets.IS_AWS_REGION}}
   project_name: "edl-entitlement-key-manager"
   region: env.CIS_AWS_REGION
-  
-  
 jobs:
   DeploymentSetup:
    runs-on: ubuntu-latest
    steps:
     - uses: actions/checkout@v2
+    - uses: ./environments.yml
        
     
    
