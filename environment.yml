@@ -1,0 +1,8 @@
+devl:
+  - region: us-east-1
+    environmentName: devl
+    bucket: jd-us01-commoninformationservices-devl-system
+prod:
+  - region: us-east-1
+    environmentName: prod
+    bucket: jd-us01-commoninformationservices-prod-system
