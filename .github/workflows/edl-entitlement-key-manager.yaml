@@ -12,12 +12,13 @@ env:
   CIS_AWS_REGION: ${{secrets.IS_AWS_REGION}}
   project_name: "edl-entitlement-key-manager"
   region: env.CIS_AWS_REGION
-  sta
-  envNamesAndAccounts: [ [devl,{{env.CIS_DEVL_AWS_ACCT}}],[prod,{{env.CIS_PROD_AWS_ACCT}}] ]
 steps:
 jobs:
   DeploymentSetup:
    runs-on: ubuntu-latest
+   strategy:
+     matrix:
+     envNamesAndAccounts: [ [devl,{{env.CIS_DEVL_AWS_ACCT}}],[prod,{{env.CIS_PROD_AWS_ACCT}}] ] 
    steps:
     - uses: actions/checkout@v2
     - name: Read environment.yml
@@ -29,15 +30,15 @@ jobs:
       run: echo "${{ steps.package.outputs.content }}"
    Veracode SCA:
      runs-on: ubuntu-latest
+     if: ${{ {{env.willDeployToLowerEnvironments}} == 'true' }}
      steps:
       - uses: actions/checkout@v2
-      if: ${{ {{env.willDeployToLowerEnvironments}} = 'true' }}
       - name: Set env
-      run: |
+        run: |
          echo "url=$(echo $url| returnStdout: true, script: 'git config remote.origin.url)"
-    - name: Test
-      run: echo $url
-      run:
+      - name: Test
+        run: echo $url
+      
          
       def willDeployToProd = BRANCH_NAME == 'master' && (url == "git@github.deere.com:EDL/${project_name}.git" || url == "https://github.deere.com/EDL/${project_name}.git")
       
