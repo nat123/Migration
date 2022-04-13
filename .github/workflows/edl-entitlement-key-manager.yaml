@@ -28,12 +28,12 @@ jobs:
    Veracodesca:
      name: Veracodesca
      runs-on: ubuntu-latest
-     if: ${{ env.willDeployToLowerEnvironments }}
+     if: ${willDeployToLowerEnvironments} == true 
      steps:
       - uses: actions/checkout@v2
       - name: Set env
         run: |
-         echo "url=$(echo $url| returnStdout: true, script: 'git config remote.origin.url)"
+         echo "url=$(echo $url| returnStdout: true, script: 'git config remote.origin.url)"> >> $url
       - name: Test
         run: echo $url
       
