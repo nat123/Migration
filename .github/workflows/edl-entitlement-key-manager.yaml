@@ -17,7 +17,13 @@ jobs:
    runs-on: ubuntu-latest
    steps:
     - uses: actions/checkout@v2
-    - uses: ./environments.yml
+    - name: Read environment.yml
+      id: package
+      uses: juliangruber/read-file-action@v1
+      with:
+        path: ./environment.yml
+    - name: Echo package.json
+      run: echo "${{ steps.package.outputs.content }}"
        
     
    
