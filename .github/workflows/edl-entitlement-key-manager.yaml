@@ -14,6 +14,7 @@ env:
   region: env.CIS_AWS_REGION
 jobs:
    DeploymentSetup:
+     name: DeploymentSetup
      runs-on: ubuntu-latest
      steps: 
      - uses: actions/checkout@v2
@@ -25,6 +26,7 @@ jobs:
      - name: Echo package.json
        run: echo "${{ steps.package.outputs.content }}"
    Veracodesca:
+     name: Veracodesca
      runs-on: ubuntu-latest
      if: ${{ {{env.willDeployToLowerEnvironments}} == 'true' }}
      steps:
