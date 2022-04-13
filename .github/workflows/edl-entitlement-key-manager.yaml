@@ -15,39 +15,11 @@ env:
   
   
 jobs:
-  Deployment Setup:
-   name: Development Setup
-   runs-on: "${{ github.event.inputs.environment }}" 
+  DeploymentSetup:
+   name: DevelopmentSetup
+   runs-on: ubuntu-latest
    steps:
     - uses: actions/checkout@v2
         ${{ env.GITHUB_WORKSPACE }}/environments.yml
     
-   Veracode SCA:
-    
-      
-       
-   Deploy and Test - ${currentEnvName}:
-    if: ${{ ${{env.API_KEY}} }}
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/github-script@v1
-  env:
-    DATA: ${{ steps.step-id.outputs.output-name }}
-  with:
-    script: |
-      console.log(process.env.DATA)
-      def willDeployToProd = BRANCH_NAME == 'master' && (url == "git@github.deere.com:EDL/${project_name}.git" || url == "https://github.deere.com/EDL/${project_name}.git")
-
-    - name: Set env
-      run: |
-         echo "url=$(echo $url| returnStdout: true, script: 'git config remote.origin.url)"
-    - name: Test
-      run: echo $GITHUB_SHA_SHORT
-      run: |
-            IFS="," read -a myarray <<< ${{ env.VALUE_ARRAY_AS_STRING }}
-            for i in "${envNamesAndAccounts[@]}"; do
-              echo "Value: ${i}"
-              echo "Value: ${i%.*}"
-            done
-  
+   
