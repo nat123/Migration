@@ -12,14 +12,11 @@ env:
   CIS_AWS_REGION: ${{secrets.IS_AWS_REGION}}
   project_name: "edl-entitlement-key-manager"
   region: env.CIS_AWS_REGION
-steps:
+
 jobs:
   DeploymentSetup:
    runs-on: ubuntu-latest
-   strategy:
-     matrix:
-     envNamesAndAccounts: [ [devl,{{env.CIS_DEVL_AWS_ACCT}}],[prod,{{env.CIS_PROD_AWS_ACCT}}] ] 
-   steps:
+  steps: 
     - uses: actions/checkout@v2
     - name: Read environment.yml
       id: package
@@ -28,7 +25,7 @@ jobs:
         path: ./environment.yml
     - name: Echo package.json
       run: echo "${{ steps.package.outputs.content }}"
-   Veracode SCA:
+   Veracodesca:
      runs-on: ubuntu-latest
      if: ${{ {{env.willDeployToLowerEnvironments}} == 'true' }}
      steps:
