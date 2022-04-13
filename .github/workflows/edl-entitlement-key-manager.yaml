@@ -5,7 +5,7 @@ on:
   # Allows you to run this workflow manually from the Actions tab
  workflow_dispatch:
 env:
-  willDeployToLowerEnvironments: false 
+  willDeployToLowerEnvironments: 'false'
   BRANCH_NAME: 'master'
   CIS_DEVL_AWS_ACCT: ${{secrets.CIS_DEVL_AWS_ACCT}}
   CIS_PROD_AWS_ACCT: ${{secrets.CIS_PROD_AWS_ACCT}}
@@ -28,7 +28,7 @@ jobs:
    Veracodesca:
      name: Veracodesca
      runs-on: ubuntu-latest
-     if: ${{ $willDeployToLowerEnvironments == 'true' }}
+     if: ${{ env.willDeployToLowerEnvironments }}
      steps:
       - uses: actions/checkout@v2
       - name: Set env
