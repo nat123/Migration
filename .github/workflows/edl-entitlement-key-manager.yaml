@@ -16,7 +16,6 @@ env:
   
 jobs:
   DeploymentSetup:
-   name: DevelopmentSetup
    runs-on: ubuntu-latest
    steps:
     - uses: actions/checkout@v2
