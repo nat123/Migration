@@ -5,14 +5,14 @@ on:
   # Allows you to run this workflow manually from the Actions tab
  workflow_dispatch:
 env:
+  willDeployToLowerEnvironments: false 
+  BRANCH_NAME: 'master'
   CIS_DEVL_AWS_ACCT: ${{secrets.CIS_DEVL_AWS_ACCT}}
   CIS_PROD_AWS_ACCT: ${{secrets.CIS_PROD_AWS_ACCT}}
   CIS_AWS_REGION: ${{secrets.IS_AWS_REGION}}
-  willDeployToLowerEnvironments: false 
-  BRANCH_NAME: 'master'
   project_name: "edl-entitlement-key-manager"
   region: env.CIS_AWS_REGION
-  environments: devl,prod
+  
   
 jobs:
   Deployment Setup:
