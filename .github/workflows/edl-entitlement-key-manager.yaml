@@ -31,7 +31,7 @@ jobs:
      steps: 
      - uses: actions/checkout@v2
      - run: |
-          echo "git config remote.origin.url" >> url 
+          git config remote.origin.url >> url 
           echo $url
      
        
