@@ -28,13 +28,13 @@ jobs:
    Veracodesca:
      name: Veracodesca
      runs-on: ubuntu-latest
-     steps:
-      - uses: actions/checkout@v2
-      - name: Set env
-        run: |
-         echo "url=$(echo $url| script: 'git config remote.origin.url')" > $url
-      - name: Test
-        run: echo $url
+     steps: 
+     - uses: actions/checkout@v2
+     - run: |
+          echo "git config remote.origin.url" >> url 
+          echo $url
+     
+       
       
          
       
