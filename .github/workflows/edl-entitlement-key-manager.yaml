@@ -34,8 +34,8 @@ jobs:
           git config remote.origin.url >> url 
           echo $url
           echo "willDeployToProd" 
-          echo BRANCH_NAME == 'master' 
-          echo "url == "git@github.deere.com:EDL/${(env.project_name}.git" || url == "https://github.deere.com/EDL/${(env.project_name}).git")"
+          echo "BRANCH_NAME == 'master'" 
+          echo "(url == "git@github.deere.com:EDL/${(env.project_name}.git" || url == "https://github.deere.com/EDL/${(env.project_name}).git")"
      
        
       
