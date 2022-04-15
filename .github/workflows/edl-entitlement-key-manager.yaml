@@ -48,7 +48,7 @@ jobs:
            then
            echo "git config remote.origin.url >> url"
            echo $url
-           echo "willDeployToProd = {{env.BRANCH_NAME}} = 'master' && $url=git@github.deere.com:EDL/${{env.project_name}}.git ||
+           echo "willDeployToProd = ${{env.BRANCH_NAME}} = "master" && $url=git@github.deere.com:EDL/${{env.project_name}}.git ||
                $url=https://github.deere.com/EDL/${{env.project_name}}.git"
            echo $willDeployToProd
            fi
