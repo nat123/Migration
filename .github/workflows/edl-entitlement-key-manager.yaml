@@ -27,8 +27,18 @@ jobs:
    Veracodesca:
      name: Veracodesca
      runs-on: ubuntu-latest
+     strategy:
+      matrix:
+          envNamesAndAccounts: [devl, prod] 
      steps: 
      - uses: actions/checkout@v2
+     - name: Set env var
+       id: vars
+       run: |
+          echo ::set-output name=env::\
+          $(echo '{ "devl": "{{env.CIS_DEVL_AWS_ACCT}}", "prod": "{{env.CIS_PROD_AWS_ACCT}}" }' | jq -r 'to_entries[] | select(.key=="${{ envNamesAndAccounts }}") | .value')
+     - name: Test env var
+       run: echo "Testing ${{ steps.vars.outputs.arch }}"
      - name: Set env willDeployToLowerEnvironments
        run: echo "willDeployToLowerEnvironments=false"
      - name: Set env NEED
