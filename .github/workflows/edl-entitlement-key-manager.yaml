@@ -44,7 +44,7 @@ jobs:
           run: echo "willDeployToLowerEnvironments=false"
         - name: Set env NEED
           run: |
-           if [ $willDeployToLowerEnvironments == 'true ]; 
+           if [ $willDeployToLowerEnvironments == 'true' ]; 
            then
            echo "git config remote.origin.url >> url"
            echo $url
