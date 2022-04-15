@@ -31,30 +31,31 @@ jobs:
      - name: Echo package.json
        run: echo "${{ steps.package.outputs.content }}"
    Veracodesca:
-     name: Veracodesca
-     runs-on: ubuntu-latest
-     strategy:
+    name: Veracodesca
+    runs-on: ubuntu-latest
+    strategy:
       matrix:
           envNamesAndAccounts: [devl, prod] 
-     if: true == $inputs.willDeployToLowerEnvironments 
-     steps: 
-       - uses: actions/checkout@v2
-       - name: Set env var
-         id: vars
-         run: |
+    steps: 
+        - uses: actions/checkout@v2
+        - name: Set env var
+          id: vars
+          run: |
             echo ::set-output name=env::\
             $(echo '{ "devl": "${{env.CIS_DEVL_AWS_ACCT}}", "prod": "${{env.CIS_DEVL_AWS_ACCT}}" }' | jq -r 'to_entries[] | select(.key=="${{ matrix.envNamesAndAccounts }}") | .value')
-       - name: Test env var
-         run: echo "Testing ${{ steps.vars.outputs.env}}"
-       - name: Set env willDeployToLowerEnvironments
-         run: echo "willDeployToLowerEnvironments=false"
-       - name: Set env NEED
-         run: |
-          echo "git config remote.origin.url >> url"
-          echo $url
-          echo "willDeployToProd = {{env.BRANCH_NAME}} = 'master' && $url=git@github.deere.com:EDL/${{env.project_name}}.git ||
+        - name: Test env var
+          run: echo "Testing ${{ steps.vars.outputs.env}}"
+        - name: Set env willDeployToLowerEnvironments
+          run: echo "willDeployToLowerEnvironments=false"
+        - name: Set env NEED
+          run: |
+           if [ $willDeployToLowerEnvironments == 'true ]; 
+           then
+           echo "git config remote.origin.url >> url"
+           echo $url
+           echo "willDeployToProd = {{env.BRANCH_NAME}} = 'master' && $url=git@github.deere.com:EDL/${{env.project_name}}.git ||
                $url=https://github.deere.com/EDL/${{env.project_name}}.git"
-          echo $willDeployToProd
+           echo $willDeployToProd
          
           
      
