@@ -32,8 +32,8 @@ jobs:
      - name: Set env willDeployToLowerEnvironments
        run: echo "willDeployToLowerEnvironments=false"
      - name: Set env NEED
-     - if: true ==  $willDeployToLowerEnvironments
        run: |
+          if (  true ==  $willDeployToLowerEnvironments )
           echo "git config remote.origin.url >> url"
           echo $url
           echo "willDeployToProd = {{env.BRANCH_NAME}} = 'master' && $url=git@github.deere.com:EDL/${{env.project_name}}.git ||
