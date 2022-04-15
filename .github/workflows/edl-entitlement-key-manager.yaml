@@ -38,7 +38,7 @@ jobs:
           echo ::set-output name=env::\
           $(echo '{ "devl": "{{env.CIS_DEVL_AWS_ACCT}}", "prod": "{{env.CIS_PROD_AWS_ACCT}}" }' | jq -r 'to_entries[] | select(.key=="${{ envNamesAndAccounts }}") | .value')
      - name: Test env var
-       run: echo "Testing ${{ steps.vars.outputs.arch }}"
+       run: echo "Testing ${{ steps.vars.outputs.env}}"
      - name: Set env willDeployToLowerEnvironments
        run: echo "willDeployToLowerEnvironments=false"
      - name: Set env NEED
