@@ -1,0 +1,23 @@
+name: edl-entitlement-key-manager
+on:
+ schedule:
+    - cron:  '01 00 * * *'
+  # Allows you to run this workflow manually from the Actions tab
+ workflow_dispatch:
+env:
+  BRANCH_NAME: 'master'
+jobs:
+  varMap:
+    strategy:
+      matrix:
+        machine_architecture: [32, 64]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set arch var
+        id: vars
+        run: |
+          echo ::set-output name=arch::\
+          $(echo '{ "32": "i386", "64": "x86_64" }' | jq -r 'to_entries[] | select(.key=="${{ matrix.machine_architecture }}") | .value')
+
+      - name: Test arch var
+        run: echo "Testing ${{ steps.vars.outputs.arch }}"
