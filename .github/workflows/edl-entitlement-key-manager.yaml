@@ -36,7 +36,7 @@ jobs:
      strategy:
       matrix:
           envNamesAndAccounts: [devl, prod] 
-     if: true == {{ $inputs.willDeployToLowerEnvironments }}
+     if: true == $inputs.willDeployToLowerEnvironments 
      steps: 
        - uses: actions/checkout@v2
        - name: Set env var
