@@ -1,4 +1,4 @@
-name: edl-entitlement-key-manager
+name: mapping
 on:
  schedule:
     - cron:  '01 00 * * *'
