@@ -28,7 +28,7 @@ jobs:
    Veracodesca:
      name: Veracodesca
      runs-on: ubuntu-latest
-     if: ${willDeployToLowerEnvironments} == 'true'
+     if: ${{env.willDeployToLowerEnvironments}} == 'true'
      steps: 
      - uses: actions/checkout@v2
       
