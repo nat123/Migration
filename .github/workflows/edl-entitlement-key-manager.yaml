@@ -31,12 +31,16 @@ jobs:
      if: ${{env.willDeployToLowerEnvironments}} 
      steps: 
      - uses: actions/checkout@v2
-      
-     - run: |
-          git config remote.origin.url >> url 
-          echo "willDeployToProd" 
-          echo "BRANCH_NAME == 'master'" 
-          echo '"url::git@github.deere.com:EDL/${env.project_name}.git" ||"url::https://github.deere.com/EDL/${env.project_name}.git""'
+     - name: Set env willDeployToLowerEnvironments
+       run: echo "willDeployToLowerEnvironments=false"
+     - name: Set env NEED
+       run: |
+          if [[ $willDeployToLowerEnvironment == 'true']]
+           run: |
+             git config remote.origin.url >> url 
+             echo "willDeployToProd" 
+             echo "BRANCH_NAME == 'master'" 
+              echo "url=git@github.deere.com:EDL/${env.project_name}.git" ||"url=https://github.deere.com/EDL/${env.project_name}.git"
           
           
      
