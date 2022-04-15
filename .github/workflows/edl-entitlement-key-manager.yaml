@@ -34,7 +34,6 @@ jobs:
        run: echo "willDeployToLowerEnvironments=false"
      - name: Set env NEED
        run: |
-          if [[ $willDeployToLowerEnvironment == 'true']]
           echo "git config remote.origin.url >> url"
           echo "willDeployToProd" 
           echo "BRANCH_NAME == 'master'" 
