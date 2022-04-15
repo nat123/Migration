@@ -36,7 +36,7 @@ jobs:
        id: vars
        run: |
           echo ::set-output name=env::\
-          $(echo '{ "devl": "{{env.CIS_DEVL_AWS_ACCT}}", "prod": "{{env.CIS_PROD_AWS_ACCT}}" }' | jq -r 'to_entries[] | select(.key=="${{ envNamesAndAccounts }}") | .value')
+          ${{ fromJson('{ devl: "{{env.CIS_DEVL_AWS_ACCT}}", prod: "{{env.CIS_DEVL_AWS_ACCT}}" }')[envNamesAndAccounts] }}
      - name: Test env var
        run: echo "Testing ${{ steps.vars.outputs.env}}"
      - name: Set env willDeployToLowerEnvironments
