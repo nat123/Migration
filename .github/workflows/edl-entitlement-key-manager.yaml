@@ -28,7 +28,6 @@ jobs:
    Veracodesca:
      name: Veracodesca
      runs-on: ubuntu-latest
-     if: ${{env.willDeployToLowerEnvironments}} 
      steps: 
      - uses: actions/checkout@v2
      - name: Set env willDeployToLowerEnvironments
@@ -36,11 +35,10 @@ jobs:
      - name: Set env NEED
        run: |
           if [[ $willDeployToLowerEnvironment == 'true']]
-           run: |
-             git config remote.origin.url >> url 
-             echo "willDeployToProd" 
-             echo "BRANCH_NAME == 'master'" 
-              echo "url=git@github.deere.com:EDL/${env.project_name}.git" ||"url=https://github.deere.com/EDL/${env.project_name}.git"
+          echo "git config remote.origin.url >> url"
+          echo "willDeployToProd" 
+          echo "BRANCH_NAME == 'master'" 
+          echo ""url=git@github.deere.com:EDL/${env.project_name}.git" ||"url=https://github.deere.com/EDL/${env.project_name}.git""
           
           
      
