@@ -1,0 +1,25 @@
+name: fileread
+on:
+  workflow_dispatch:
+
+
+jobs:
+  Publish_tasks_package_dev:
+  
+   strategy:
+     
+    matrix:
+     include: 
+      - { region: us-east-1, environmentName: devl, bucket: jd-us01-commoninformationservices-devl-system, generatorBucket: jd-us01-cis-devl-entitlement-keys, stack: infrastructure/arch_yamls/stack.j2,vars: infrastructure/config/stack-us-devl.yml, stackConfig: infrastructure/config/stack.config }
+      - { region: eu-central-1, environmentName: devl, bucket: jd-eu01-commoninformationservices-devl-system, generatorBucket: jd-eu01-cis-devl-entitlement-keys, stack: infrastructure/arch_yamls/stack.j2,vars: infrastructure/config/stack-eu-devl.yml, stackConfig: infrastructure/config/stack.config }
+      - { region: us-east-1, environmentName: prod, bucket: jd-us01-commoninformationservices-prod-system, generatorBucket: jd-us01-cis-prod-entitlement-keys, stack: infrastructure/arch_yamls/stack.j2,vars: infrastructure/config/stack-us-prod.yml, stackConfig: infrastructure/config/stack.config }
+      - { region: eu-central-1, environmentName: prod, bucket: jd-eu01-commoninformationservices-prod-system, generatorBucket: jd-eu01-cis-prod-entitlement-keys, stack: infrastructure/arch_yamls/stack.j2,vars: infrastructure/config/stack-eu-prod.yml, stackConfig: infrastructure/config/stack.config }
+      
+          
+   runs-on: [ ubuntu-latest ]
+   steps:
+    - uses: actions/checkout@v2
+    - name: call commoncloud template
+      run:  |
+        chmod 755 ./test.sh 
+        ./test.sh ${{ matrix.region }} ${{ matrix.environmentName }} ${{ matrix.bucket }} ${{ matrix.generatorBucket }} ${{ matrix.stack }} ${{ matrix.vars }} ${{ matrix.stackConfig }}
