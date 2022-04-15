@@ -5,7 +5,6 @@ on:
   # Allows you to run this workflow manually from the Actions tab
  workflow_dispatch:
 env:
-  willDeployToLowerEnvironments: 'false'
   BRANCH_NAME: 'master'
   CIS_DEVL_AWS_ACCT: ${{secrets.CIS_DEVL_AWS_ACCT}}
   CIS_PROD_AWS_ACCT: ${{secrets.CIS_PROD_AWS_ACCT}}
@@ -33,13 +32,14 @@ jobs:
      - name: Set env willDeployToLowerEnvironments
        run: echo "willDeployToLowerEnvironments=false"
      - name: Set env NEED
+     - if: true ==  $willDeployToLowerEnvironments
        run: |
           echo "git config remote.origin.url >> url"
-          echo "willDeployToProd" 
-          echo "BRANCH_NAME == 'master'" 
-          echo "url=git@github.deere.com:EDL/${{env.project_name}}.git ||
-               url=https://github.deere.com/EDL/${{env.project_name}}.git"
-          
+          echo $url
+          echo "willDeployToProd = {{env.BRANCH_NAME}} = 'master' && $url=git@github.deere.com:EDL/${{env.project_name}}.git ||
+               $url=https://github.deere.com/EDL/${{env.project_name}}.git"
+          echo $willDeployToProd
+         
           
      
        
