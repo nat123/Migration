@@ -52,6 +52,38 @@ jobs:
                $url=https://github.deere.com/EDL/${{env.project_name}}.git"
            echo $willDeployToProd
            fi
+          if: |
+            {{ failure }} && ( github.head_ref == 'master')
+            - name: Send mailer
+              uses: devellany/send-mail@v1.0.2
+               with:
+               # Enter SMTP host.
+                host: 
+               # Enter SMTP port. (defaults to 465)
+              port: # optional, default is 465
+              # Enter SMTP host account.
+              account: 
+             # Enter SMTP host account password.
+              password: 
+            # Enter sender name.
+             sender: 
+            # Enter sender mail.
+            from: 
+            # Enter recipient emails and separated with 'comma'. (The prefix 'file://' if you want to read a file)
+            to: ENTERPRISEDATALAKECORETEAM@JohnDeere.com
+          # Enter the subject of the mail. (The prefix 'file://' if you want to read a file)
+          subject: "FAILURE on MASTER BRANCH: ${currentBuild.fullDisplayName}"
+          # Enter the body of the mail. (The prefix 'file://' if you want to read a file)
+          body: env.BUILD_URL
+   if: {{ $willDeployToLowerEnvironment == "true"}}
+         
+    
+      mail to:"ENTERPRISEDATALAKECORETEAM@JohnDeere.com", subject:"FAILURE on MASTER BRANCH: ${currentBuild.fullDisplayName}", body:env.BUILD_URL
+    } else if (willDeployToLowerEnvironments) {
+      mail to: "ENTERPRISEDATALAKECORETEAM@JohnDeere.com", subject: "FAILURE: ${currentBuild.fullDisplayName}", body: env.BUILD_URL
+    }
+    error(err)
+  }
          
           
      
