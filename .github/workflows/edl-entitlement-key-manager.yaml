@@ -54,6 +54,7 @@ jobs:
            fi
           if: |
             {{ failure }} && ( github.head_ref == 'master')
+             if: ${{ failure() && steps.diff.conclusion == 'failure' }}
             - name: Send mailer
               uses: devellany/send-mail@v1.0.2
                with:
