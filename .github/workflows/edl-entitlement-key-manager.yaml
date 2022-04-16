@@ -85,6 +85,18 @@ jobs:
     }
     error(err)
   }
+  - uses: actions/stale@v4
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          stale-pr-message: >
+            This pull request has been automatically marked as stale because it has not had recent activity.
+          days-before-pr-stale: 90
+          days-before-pr-close: 5
+          exempt-pr-labels: 'pinned'
+          remove-pr-stale-when-updated: true
+          delete-branch: true
+          ascending: true
+          operations-per-run: 50
          
           
      
