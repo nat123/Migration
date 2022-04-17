@@ -1,0 +1,14 @@
+name: Composite example
+on: [workflow_dispatch]
+jobs:
+  sum:
+    runs-on: ubuntu-latest
+    name: job to sum nos
+    steps:
+    - uses: actions/checkout@v2
+    - id: myCompositeAction
+      uses: nat123/CompositeActionsArchive
+    -run: echo sum ${{ steps.myCompositeAction.Outputs.sum }}
+     shell: bash
+    
+    
