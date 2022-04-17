@@ -7,7 +7,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - id: myCompositeAction
-      uses: nat123/CompositeActionsArchive
+      uses: nat123/CompositeActionsArchive@v1
     - run: echo sum ${{ steps.myCompositeAction.Outputs.sum }}
       shell: bash
     
