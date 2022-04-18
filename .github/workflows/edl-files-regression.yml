@@ -24,6 +24,10 @@ jobs:
          with:
           sbt-version: '0.13.15'
        
+       - name: varcodesca
+         uses: nat123/CompositeActionsArchive/.github/actions/veracode@master
+      
+       
        - name: Build and Integration Test
          shell: bash
          run: |
