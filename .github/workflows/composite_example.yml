@@ -8,6 +8,8 @@ jobs:
     - uses: actions/checkout@v2
     - id: myCompositeAction
       uses: nat123/CompositeActionsArchive@v1
+      with:
+        destinationFolder: '/.'
     - run: echo sum ${{ steps.myCompositeAction.Outputs.sum }}
       shell: bash
     
