@@ -20,6 +20,8 @@ jobs:
      name: edl-files-regression
      runs-on: "${{ github.event.inputs.environment }}" 
      steps:
+   
+       - uses: actions/checkout@v2
        - uses: nat123/ActionTemplates-/.github/actions/SBT Install@main
          with:
           sbt-version: '0.13.15'
