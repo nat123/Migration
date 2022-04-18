@@ -16,7 +16,13 @@ env:
   CIS_PROD_AUTH_CLIENT_SECRET: ${{secrets.CIS_PROD_AUTH_CLIENT_SECRET}}
   
 jobs:
-   edl-files-regression:
+    veracode:
+     name: veracode
+     runs-on: "${{ github.event.inputs.environment }}" 
+     steps:
+       - uses: actions/checkout@v2
+       - uses: nat123/CompositeActionsArchive/.github/actions/veracode@main
+    edl-files-regression:
      name: edl-files-regression
      runs-on: "${{ github.event.inputs.environment }}" 
      steps:
@@ -26,9 +32,7 @@ jobs:
          with:
           sbt-version: '0.13.15'
        
-       - name: varcodesca
-         uses: nat123/CompositeActionsArchive/.github/actions/veracode@main
-      
+       
        
        - name: Build and Integration Test
          shell: bash
