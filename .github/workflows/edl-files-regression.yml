@@ -21,7 +21,7 @@ jobs:
      runs-on: "${{ github.event.inputs.environment }}" 
      steps:
        - uses: actions/checkout@v2
-       - uses: nat123/CompositeActionsArchive/.github/actions/veracode@main
+       - uses: nat123/CompositeActionsArchive/.github/actions/veracode@v3
     edl-files-regression:
      name: edl-files-regression
      runs-on: "${{ github.event.inputs.environment }}" 
