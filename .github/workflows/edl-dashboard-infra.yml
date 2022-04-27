@@ -2,13 +2,17 @@ name: edl-dashboard-infra
 on: 
  workflow_dispatch:
 env:
- def project_name = "edl-dashboard-infra"
- envNamesAndAccounts = []
- region = ""
- environments = [:]
- willDeployToLowerEnvironments = true || BRANCH_NAME == 'master'
- willDeployToProd
- snowChangeCreated = false
- buildFailed = false
- buildError
- approvalMap
+  project_name = "edl-dashboard-infra"
+  envNamesAndAccounts = []
+  
+jobs:
+  runMultipleCommands:
+    runs-on: ubuntu-latest
+    steps:
+     - uses: actions/checkout@v1
+     - run: |
+        "\$(aws ecr get-login --no-include-email --region us-east-1)"
+        "docker build -t edl-dashboard-repo './infrastructure/docker/$environmentName'"
+        "docker tag edl-dashboard-repo:latest '${currentAccountNumber}.dkr.ecr.us-east-1.amazonaws.com/edl-dashboard-repo:latest'"
+        "docker push '${currentAccountNumber}.dkr.ecr.us-east-1.amazonaws.com/edl-dashboard-repo:latest'"
+        "Image push complete"
