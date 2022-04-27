@@ -44,14 +44,17 @@ jobs:
      steps: 
      - uses: actions/checkout@v2
      - run: |
-           if [[ $willDeployToLowerEnvironments == "true" ]]; 
-           then
-           echo "url = ./git config remote.origin.url "
-           echo $url
-           echo "willDeployToProd = ${{env.BRANCH_NAME}} = "master" && $url=git@github.deere.com:EDL/${{env.project_name}}.git ||
+           chmod +x ./git config remote.origin.url
+           ./git config remote.origin.url
+       shell: bash
+     - run: |
+          echo "willDeployToProd = ${{env.BRANCH_NAME}} = "master" && $url=git@github.deere.com:EDL/${{env.project_name}}.git ||
                $url=https://github.deere.com/EDL/${{env.project_name}}.git"
            echo $willDeployToProd
-           fi
+       
+           
+           
+           
           
         
         
