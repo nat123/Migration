@@ -14,8 +14,6 @@ jobs:
         "Image push complete"
   Nodejs:
     runs-on: ubuntu-latest
-    env:
-      region = CIS_AWS_REGION
     strategy:
       matrix:
         node-version: ['8.10.0']
@@ -27,6 +25,18 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+  DeploymentSetup:
+     name: DeploymentSetup
+     runs-on: ubuntu-latest
+     steps: 
+     - uses: actions/checkout@v2
+     - name: Read environment.yml
+       id: package
+       uses: juliangruber/read-file-action@v1
+       with:
+        path: ./environment.yml
+     - name: Echo package.json
+       run: echo "${{ steps.package.outputs.content }}"
           
         
         
