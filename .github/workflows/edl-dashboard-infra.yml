@@ -42,16 +42,17 @@ jobs:
   Package:
      name: Run-me if FLAG is true
      env: 
-        willDeployToLowerEnvironments: 'true'
+        willDeployToLowerEnvironments: ${{true}}
      runs-on: ubuntu-latest
-     if:  env.willDeployToLowerEnvironments == 'true'
      steps: 
-     - uses: actions/checkout@v2
-     - run: |
+      - if: ${{ env.willDeployToLowerEnvironments == 'true' }}
+      - name: test
+      - uses: actions/checkout@v2
+      - run: |
            chmod +x ./git config remote.origin.url
            ./git config remote.origin.url
-       shell: bash
-     - run: |
+        shell: bash
+      - run: |
           echo "willDeployToProd = ${{env.BRANCH_NAME}} = "master" && $url=git@github.deere.com:EDL/${{env.project_name}}.git ||
                $url=https://github.deere.com/EDL/${{env.project_name}}.git"
            echo $willDeployToProd
