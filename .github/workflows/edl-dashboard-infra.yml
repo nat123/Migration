@@ -1,8 +1,6 @@
 name: edl-dashboard-infra
 on: 
  workflow_dispatch:
-env: 
-  willDeployToLowerEnvironments: 'true'
 jobs:
   pushToImage:
     runs-on: ubuntu-latest
@@ -27,43 +25,5 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-  DeploymentSetup:
-     name: DeploymentSetup
-     runs-on: ubuntu-latest
-     steps: 
-     - uses: actions/checkout@v2
-     - name: Read environment.yml
-       id: package
-       uses: juliangruber/read-file-action@v1
-       with:
-        path: ./environment.yml
-     - name: Echo package.json
-       run: echo "${{ steps.package.outputs.content }}"
-  Package:
-     name: Run-me if FLAG is true
-     env: 
-        willDeployToLowerEnvironments: ${{true}}
-     runs-on: ubuntu-latest
-     steps: 
-      - if: ${{ env.willDeployToLowerEnvironments == 'true' }}
-      - name: test
-      - uses: actions/checkout@v2
-      - run: |
-           chmod +x ./git config remote.origin.url
-           ./git config remote.origin.url
-        shell: bash
-      - run: |
-          echo "willDeployToProd = ${{env.BRANCH_NAME}} = "master" && $url=git@github.deere.com:EDL/${{env.project_name}}.git ||
-               $url=https://github.deere.com/EDL/${{env.project_name}}.git"
-           echo $willDeployToProd
-       
-           
-           
-           
-          
-        
-        
-        
-      
-        
+  
         
