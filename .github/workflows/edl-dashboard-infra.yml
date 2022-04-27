@@ -37,6 +37,15 @@ jobs:
         path: ./environment.yml
      - name: Echo package.json
        run: echo "${{ steps.package.outputs.content }}"
+  Package:
+     name: Run-me if FLAG is true
+     if: ${{ willDeployToLowerEnvironments }} == "true"
+     runs-on: ubuntu-latest
+     steps: 
+     - uses: actions/checkout@v2
+     
+     run: |
+           # some logic to run if flag==true
           
         
         
