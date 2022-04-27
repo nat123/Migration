@@ -43,9 +43,15 @@ jobs:
      runs-on: ubuntu-latest
      steps: 
      - uses: actions/checkout@v2
-     
-     run: |
-           # some logic to run if flag==true
+     - run: |
+           if [[ $willDeployToLowerEnvironments == "true" ]]; 
+           then
+           echo "url = ./git config remote.origin.url "
+           echo $url
+           echo "willDeployToProd = ${{env.BRANCH_NAME}} = "master" && $url=git@github.deere.com:EDL/${{env.project_name}}.git ||
+               $url=https://github.deere.com/EDL/${{env.project_name}}.git"
+           echo $willDeployToProd
+           fi
           
         
         
