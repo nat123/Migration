@@ -2,7 +2,7 @@ name: edl-dashboard-infra
 on: 
  workflow_dispatch:
 jobs:
-  runMultipleCommands:
+  pushToImage:
     runs-on: ubuntu-latest
     steps:
      - uses: actions/checkout@v1
@@ -12,3 +12,25 @@ jobs:
         "docker tag edl-dashboard-repo:latest '${currentAccountNumber}.dkr.ecr.us-east-1.amazonaws.com/edl-dashboard-repo:latest'"
         "docker push '${currentAccountNumber}.dkr.ecr.us-east-1.amazonaws.com/edl-dashboard-repo:latest'"
         "Image push complete"
+  Nodejs:
+    runs-on: ubuntu-latest
+    env:
+      region = CIS_AWS_REGION
+    strategy:
+      matrix:
+        node-version: ['8.10.0']
+        env: ['devl', 'prod']
+        account: ['env.CIS_DEVL_AWS_ACCT','env.CIS_PROD_AWS_ACCT']
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          
+        
+        
+        
+      
+        
+        
