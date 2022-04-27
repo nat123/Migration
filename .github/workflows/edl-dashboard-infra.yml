@@ -41,8 +41,10 @@ jobs:
        run: echo "${{ steps.package.outputs.content }}"
   Package:
      name: Run-me if FLAG is true
-     if:  env.willDeployToLowerEnvironments == 'true'
+     env: 
+        willDeployToLowerEnvironments: 'true'
      runs-on: ubuntu-latest
+     if:  env.willDeployToLowerEnvironments == 'true'
      steps: 
      - uses: actions/checkout@v2
      - run: |
