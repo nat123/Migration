@@ -1,0 +1,5 @@
+name: edl-dashboard-infra
+on:
+  workflow_dispatch:
+env:
+  
