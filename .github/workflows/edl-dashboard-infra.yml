@@ -7,7 +7,7 @@ jobs:
     steps:
      - uses: actions/checkout@v1
      - run: |
-        "\$(aws ecr get-login --no-include-email --region us-east-1)"
+        "aws ecr get-login --no-include-email --region us-east-1"
         "docker build -t edl-dashboard-repo './infrastructure/docker/$environmentName'"
         "docker tag edl-dashboard-repo:latest '${currentAccountNumber}.dkr.ecr.us-east-1.amazonaws.com/edl-dashboard-repo:latest'"
         "docker push '${currentAccountNumber}.dkr.ecr.us-east-1.amazonaws.com/edl-dashboard-repo:latest'"
