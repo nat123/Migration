@@ -1,6 +1,8 @@
 name: edl-dashboard-infra
 on: 
  workflow_dispatch:
+env: 
+  willDeployToLowerEnvironments: 'true'
 jobs:
   pushToImage:
     runs-on: ubuntu-latest
@@ -39,7 +41,7 @@ jobs:
        run: echo "${{ steps.package.outputs.content }}"
   Package:
      name: Run-me if FLAG is true
-     if: ${{ willDeployToLowerEnvironments }} == "true"
+     if: ${{ env.willDeployToLowerEnvironments }} == "true"
      runs-on: ubuntu-latest
      steps: 
      - uses: actions/checkout@v2
