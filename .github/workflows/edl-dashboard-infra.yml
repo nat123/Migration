@@ -1,10 +1,6 @@
 name: edl-dashboard-infra
 on: 
  workflow_dispatch:
-env:
-  project_name = "edl-dashboard-infra"
-  envNamesAndAccounts = []
-  
 jobs:
   runMultipleCommands:
     runs-on: ubuntu-latest
