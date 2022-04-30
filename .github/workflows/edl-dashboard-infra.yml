@@ -7,11 +7,11 @@ jobs:
     steps:
      - uses: actions/checkout@v1
      - run: |
-        "aws ecr get-login --no-include-email --region us-east-1"
-        "docker build -t edl-dashboard-repo './infrastructure/docker/$environmentName'"
-        "docker tag edl-dashboard-repo:latest '${currentAccountNumber}.dkr.ecr.us-east-1.amazonaws.com/edl-dashboard-repo:latest'"
-        "docker push '${currentAccountNumber}.dkr.ecr.us-east-1.amazonaws.com/edl-dashboard-repo:latest'"
-        "Image push complete"
+        echo "aws ecr get-login --no-include-email --region us-east-1"
+        echo "docker build -t edl-dashboard-repo './infrastructure/docker/$environmentName'"
+        echo "docker tag edl-dashboard-repo:latest '${currentAccountNumber}.dkr.ecr.us-east-1.amazonaws.com/edl-dashboard-repo:latest'"
+        echo "docker push '${currentAccountNumber}.dkr.ecr.us-east-1.amazonaws.com/edl-dashboard-repo:latest'"
+        echo "Image push complete"
   Nodejs:
     runs-on: ubuntu-latest
     strategy:
