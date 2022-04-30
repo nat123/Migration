@@ -6,6 +6,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
      - uses: actions/checkout@v1
+     - name: install Docker client
+       run: |
+          export DEBIAN_FRONTEND=noninteractive
+          apt-get update
+          apt-get -y install --no-install-recommends docker.io
      - run: |
         echo "aws ecr get-login --no-include-email --region us-east-1"
         echo "docker build -t edl-dashboard-repo './infrastructure/docker/$environmentName'"
