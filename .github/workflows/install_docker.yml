@@ -12,7 +12,6 @@ jobs:
     - uses: docker-practice/actions-setup-docker@master
     - run: |
         set -x
-
-        docker version
+        docker -v
 
         docker run --rm hello-world
