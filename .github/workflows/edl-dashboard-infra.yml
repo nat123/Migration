@@ -3,6 +3,7 @@ on:
  workflow_dispatch:
 env: 
   willDeployToLowerEnvironments: 'true'
+  project_name: edl-dashboard-infra
  
 jobs:
   Build:
@@ -39,7 +40,7 @@ jobs:
        echo "pass groovy"
        git config remote.origin.url >> $url
        export willDeployToProd
-       willDeployToProd = Branch_name == master && url == "git@github.deere.com:EDL/${project_name}.git" || url == "https://github.deere.com/EDL/${project_name}.git"
+       willDeployToProd = "Branch_name == master && url == "git@github.deere.com:EDL/${project_name}.git" || url == "https://github.deere.com/EDL/${project_name}.git"
       
       
    
