@@ -30,7 +30,7 @@ jobs:
        echo "EDL/ActionTemplates/.github/actions/CommonSteps/nodeInstall@H1KII3K-patch-2"
    - name: passgroovy
      run: |
-       if [ $willDeployToLowerEnvironments: true ],
+       if [ $willDeployToLowerEnvironments == true ],
        then 
        echo "pass groovy"
        git config remote.origin.url >> $url
