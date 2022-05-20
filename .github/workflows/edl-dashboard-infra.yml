@@ -13,6 +13,11 @@ jobs:
    runs-on: ubuntu-latest
    steps:
    - uses: actions/checkout@v1
+   - name: CreateflagforwillDeployToLowerEnvironments 
+     id: create_willDeployToLowerEnvironments
+     run: |
+            echo "::set-output name=willDeployToLowerEnvironments::$willDeployToLowerEnvironments"
+
    - name: PushToImage
      run: |
         echo "aws ecr get-login --no-include-email --region us-east-1"
@@ -28,15 +33,14 @@ jobs:
    - name: DeploymentSetup_node_install
      run: |
        echo "EDL/ActionTemplates/.github/actions/CommonSteps/nodeInstall@H1KII3K-patch-2"
-   - name: passgroovy
+   - name: Run-me if willDeployToLowerEnvironments is true
+     if: ${{ steps.create_willDeployToLowerEnvironments.outputs.willDeployToLowerEnvironments== 'true' }}
      run: |
-       if [ $willDeployToLowerEnvironments == true ],
-       then 
        echo "pass groovy"
        git config remote.origin.url >> $url
        export willDeployToProd
        willDeployToProd = Branch_name == master && url == "git@github.deere.com:EDL/${project_name}.git" || url == "https://github.deere.com/EDL/${project_name}.git"
-       fi
+      
       
    
 
