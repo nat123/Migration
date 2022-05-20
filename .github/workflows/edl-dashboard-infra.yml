@@ -9,7 +9,6 @@ jobs:
    strategy:
        matrix:
         node-version: ['8.10.0']
-  
         envaccount: [ {env: devl, account: CIS_DEVL_AWS_ACCT}, {env: prod,account: CIS_PROD_AWS_ACCT }]
    runs-on: ubuntu-latest
    steps:
@@ -24,9 +23,8 @@ jobs:
    - name: Setup Node.js ${{ matrix.node-version }}
      uses: actions/setup-node@v2
      with: 
-       
-      node-version: ${{ matrix.node-version }}
-      env:  ${{ matrix.envaccount.env }} source.env
+       node-version: ${{ matrix.node-version }}
+       env:  ${{ matrix.envaccount.env }} source.env
             
             
             
