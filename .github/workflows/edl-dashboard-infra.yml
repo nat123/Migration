@@ -9,7 +9,7 @@ jobs:
    strategy:
        matrix:
         node-version: ['8.10.0']
-        envaccount: [ {env: devl, account: CIS_DEVL_AWS_ACCT}, {env: prod,account: CIS_PROD_AWS_ACCT }]
+        envNamesAndAccounts: [ {env: devl, account: CIS_DEVL_AWS_ACCT}, {env: prod,account: CIS_PROD_AWS_ACCT }]
    runs-on: ubuntu-latest
    steps:
    - uses: actions/checkout@v1
@@ -24,7 +24,22 @@ jobs:
      uses: actions/setup-node@v2
      with: 
        node-version: ${{ matrix.node-version }}
-       env:  ${{ matrix.envaccount.env }} source.env
+       env:  ${{ matrix.envNamesAndAccounts.env }} source.env
+   - name: DeploymentSetup_node_install
+     run: |
+       echo "EDL/ActionTemplates/.github/actions/CommonSteps/nodeInstall@H1KII3K-patch-2"
+   - name: passgroovy
+     run: |
+       if [ $willDeployToLowerEnvironments: true ],
+       then 
+       echo "pass groovy"
+       git config remote.origin.url >> $url
+       export willDeployToProd
+       willDeployToProd = Branch_name == master && url == "git@github.deere.com:EDL/${project_name}.git" || url == "https://github.deere.com/EDL/${project_name}.git"
+      
+   
+
+
             
             
             
