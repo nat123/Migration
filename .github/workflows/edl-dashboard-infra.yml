@@ -38,7 +38,7 @@ jobs:
      if: ${{ steps.create_willDeployToLowerEnvironments.outputs.willDeployToLowerEnvironments== 'true' }}
      run: |
        echo "pass groovy"
-       echo "git config remote.origin.url" > "$url"
+       echo "git config remote.origin.url" >> "$url"
        export willDeployToProd
        willDeployToProd = "Branch_name == master && url == "git@github.deere.com:EDL/${project_name}.git" || url == "https://github.deere.com/EDL/${project_name}.git"
       
