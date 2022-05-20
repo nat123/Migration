@@ -3,38 +3,31 @@ on:
  workflow_dispatch:
 env: 
   willDeployToLowerEnvironments: 'true'
+ 
 jobs:
-  pushToImage:
-    runs-on: ubuntu-latest
-    steps:
-     - uses: actions/checkout@v1
-    
-     - run: |
+  Build:
+  runs-on: ubuntu-latest
+  strategy:
+      matrix:
+        node-version: ['8.10.0']
+        env: ['devl','prod']
+        account: [ '{{ env.CIS_DEVL_AWS_ACCT }}', '{{ env.CIS_PROD_AWS_ACCT }}' ]
+  steps:
+    uses: actions/checkout@v1
+    name: PushToImage
+    run: |
         echo "aws ecr get-login --no-include-email --region us-east-1"
         echo "docker build -t edl-dashboard-repo './infrastructure/docker/$environmentName'"
         echo "docker tag edl-dashboard-repo:latest '${currentAccountNumber}.dkr.ecr.us-east-1.amazonaws.com/edl-dashboard-repo:latest'"
         echo "docker push '${currentAccountNumber}.dkr.ecr.us-east-1.amazonaws.com/edl-dashboard-repo:latest'"
         echo "Image push complete"
-  Nodejs:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: ['8.10.0']
-        env: ['devl', 'prod']
-        account: ['env.CIS_DEVL_AWS_ACCT','env.CIS_PROD_AWS_ACCT']
-    steps:
-      - uses: actions/checkout@v3
-      - name: Setup Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
+    
+    uses: actions/setup-node@v3
+    with:
+          env: ${{ matrix.env }}
+          account: ${{ matrix.account }}
           node-version: ${{ matrix.node-version }}
-  
-
+    
       
-      
-   
-          
-          
-          
   
-        
+      
