@@ -1,78 +1,117 @@
 name: edl-dashboard-infra
 on: 
  workflow_dispatch:
-  inputs:
-      approved:
-        type: 'boolean'
-        description: approval 
-        options:
-          - 'yes'
-          - 'no'
-        
-       prodDeployment:
-        description: 'Define env name'     
-        required: true
-        default: 'prod'
-      branch:
-        description: 'Define branch name'     
-        required: true
-        default: 'master'
+   inputs:
+      environment:
+         type: 'choice'
+         description: environment name
+         options:
+          - 'devl'
+          - 'prod'
 env: 
-  willDeployToLowerEnvironments: 'true'
-  project_name: edl-dashboard-infra
- 
+    project_name: edl-dashboard-infra
+    snowChangeCreated: false
+    CIS_DEVL_AWS_ACCT: ${{secrets.CIS_DEVL_AWS_ACCT}}
+    CIS_PROD_AWS_ACCT: ${{secrets.CIS_PROD_AWS_ACCT}}
+    assignmentGroup: "AE EDL Support"
+    configItem: "aws-ae-databricks-prod.${projectName}" 
+    baseUrl: "https://github.deere.com/EDL/${projectName}"
+    template_file: infrastructure/cloudformation_templates/edl-dashboard-infra-prod.json
+    region: us-east-1
+    stack_name: edl-dashboard-infra
+    s3_bucket: jd-us01-commoninformationservices-prod-system
+    s3_prefix: templates/jd-us01-commoninformationservices-prod-system
 jobs:
-  Build:
-   strategy:
+   edl-dashboard-infra:
+    runs-on: prod-linux-edl
+    strategy:
        matrix:
         node-version: ['8.10.0']
         envNamesAndAccounts: [ {env: devl, account: CIS_DEVL_AWS_ACCT}, {env: prod,account: CIS_PROD_AWS_ACCT }]
-   runs-on: ubuntu-latest
-   steps:
-   - uses: actions/checkout@v1
-   - name: CreateflagforwillDeployToLowerEnvironments 
-     id: create_willDeployToLowerEnvironments
-     run: |
-            echo "::set-output name=willDeployToLowerEnvironments::$willDeployToLowerEnvironments"
-
-   - name: PushToImage
-     run: |
-        echo "aws ecr get-login --no-include-email --region us-east-1"
-        echo "docker build -t edl-dashboard-repo './infrastructure/docker/$environmentName'"
-        echo "docker tag edl-dashboard-repo:latest '${currentAccountNumber}.dkr.ecr.us-east-1.amazonaws.com/edl-dashboard-repo:latest'"
-        echo "docker push '${currentAccountNumber}.dkr.ecr.us-east-1.amazonaws.com/edl-dashboard-repo:latest'"
-        echo "Image push complete"
-   - name: Setup Node.js ${{ matrix.node-version }}
-     uses: actions/setup-node@v2
-     with: 
-       node-version: ${{ matrix.node-version }}
-       env:  ${{ matrix.envNamesAndAccounts.env }} source.env
-   - name: DeploymentSetup_node_install
-     run: |
-       echo "EDL/ActionTemplates/.github/actions/CommonSteps/nodeInstall@H1KII3K-patch-2"
-   - name: Run-me if willDeployToLowerEnvironments is true
-     if: ${{ steps.create_willDeployToLowerEnvironments.outputs.willDeployToLowerEnvironments== 'true' }}
-     run: |
-       echo "pass groovy"
-       export url
-       url=echo "git config remote.origin"
-       export willDeployToProd
-       willDeployToProd = echo "Branch_name == master && url == "git@github.deere.com:EDL/${project_name}.git" || url == "https://github.deere.com/EDL/${project_name}.git""
-    - name: Push Nginx Image to ECR - if updated
-      run: |
-         run groovy unstashAndUnzip ('zip',project_name)\
-         policiesToUpdate = ["arn:aws:iam::${currentAccountNumber}:policy/datalake/files/edl-async-file-request-adapter-policy"]
-         slaveIAMRole = "arn:aws:iam::${currentAccountNumber}:role/jenkins/appslave-jenkins-edl"     
-         call groovy pushToImage(currentEnvInfo.environmentName, currentAccountNumber)
-      
-      
-   
-
-
-            
-            
-            
-    
-      
-  
-      
+    steps:
+        - uses: actions/checkout@v2
+          if: ${{ github.event.inputs.environment }} == 'devl'
+        - name: assumerole
+          uses: EDL/ActionTemplates/.github/actions/CommonSteps/assumeJenkinsRole@master
+          with:
+           accountNumber: 541843007032
+           roleName: system-roles/github-actions-runners/actions-runner-edl
+           sessionName: devl-assume
+          if: ${{ github.event.inputs.environment }} == 'devl' || ${{ github.event.inputs.environment }} == 'prod' }}
+        - name: pushToImage
+          uses: EDL/ActionTemplates/.github/actions/CommonSteps/pushToImage@master
+          with:
+             ${{ matrix.envNamesAndAccounts.env }} source.env
+        - name: Setup Node.js ${{ matrix.node-version }}
+          uses: actions/setup-node@v2
+          with: 
+            node-version: ${{ matrix.node-version }}
+            env:  ${{ matrix.envNamesAndAccounts.env }} source.env
+            region: "us-east-1"
+        - name: DeploymentSetup
+          with:
+           path: environments.yml
+        - name: nodeInstall  
+          uses: EDL/ActionTemplates/.github/actions/CommonSteps/nodeInstall@master
+        - name: Package
+          uses: EDL/ActionTemplates/.github/actions/CommonSteps/zipAndStash@master
+        - name:  Push Nginx Image to ECR - if updated
+          if: ${{ github.event.inputs.environment }} == 'devl'
+        - uses: EDL/ActionTemplates/.github/actions/CommonSteps/unstashAndUnzip@master
+        - run: |
+            echo "policiesToUpdate = ["arn:aws:iam::${currentAccountNumber}:policy/datalake/files/edl-async-file-request-adapter-policy"]"
+            echo "slaveIAMRole = "arn:aws:iam::${currentAccountNumber}:role/jenkins/appslave-jenkins-edl""
+        - uses: EDL/ActionTemplates/.github/actions/CommonSteps/setIamPoliciesToLatest@master
+        - uses: EDL/ActionTemplates/.github/actions/CommonSteps/pushToImage@master
+        - name: cloudCommonDeploy
+          timeout-minutes: 15
+          if: github.event.ref == 'refs/heads/master'
+        - name: vercodesca
+          uses: EDL/ActionTemplates/.github/actions/Veracodesca@master 
+        - name: SonarQube Analysis
+          if: github.event.ref == 'refs/heads/main'
+          run: |
+           ${scannerHome}/bin/sonar-scanner
+#        - name: Deploy edl-dashboard-infra to prod
+#          run: |       
+#            aws cloudformation deploy --template-file $template_file \
+#              --region $region \
+#             --stack-name $stack_name \
+ #             --s3-bucket $s3_bucket \
+#              --s3-prefix $s3_prefix \
+#              --no-fail-on-empty-changeset \
+#             --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM
+        - name: createSnowChange
+          if: github.event.ref == 'refs/heads/master'
+          uses: EDL/ActionTemplates/.github/actions/createSnowChange@master 
+          id: createSnowChange
+          with:
+           assignmentGroup: $assignmentGroup
+           configItem: $configItem
+           url: $baseUrl
+        - name: Get the changeNumber
+          run: echo "${{ steps.createSnowChange.outputs.changeNumber }}"
+        - name: Create Job - Prod
+          if:  github.event.ref == 'refs/heads/master'
+          run: |
+           echo '::set-output name=snowChangeCreated::true'
+           ./deploy.sh prod
+          id: snowChangeCreated      
+        - name: Deployment Successful
+          if: steps.snowChangeCreated.outputs.snowChangeCreated == 'true'
+          uses: EDL/ActionTemplates/.github/actions/closeSnowChange@master
+          with: 
+           changeNumber: ${{ steps.createSnowChange.outputs.changeNumber }}
+           closureCode: successful
+           closureNotes: eployment Completed Successfully
+        - name: Deployment Failed
+          if: steps.snowChangeCreated.outputs.snowChangeCreated == 'false'
+          uses: EDL/ActionTemplates/.github/actions/closeSnowChange@master
+          with: 
+           changeNumber: ${{ steps.createSnowChange.outputs.changeNumber }}
+           closureCode: unsuccessful
+           closureNotes: Deployment Failed
+        - name: Send mail
+          if: always()
+          uses: EDL/ActionTemplates/.github/actions/SendMail@master
+         
