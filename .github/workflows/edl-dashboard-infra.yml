@@ -39,8 +39,9 @@ jobs:
            accountNumber: 541843007032
            roleName: system-roles/github-actions-runners/actions-runner-edl
            sessionName: devl-assume
-          if: ${{ github.event.inputs.environment }} == 'devl' || ${{ github.event.inputs.environment }} == 'prod' }}
+          # if: ${{ github.event.inputs.environment }} == 'devl' || ${{ github.event.inputs.environment }} == 'prod' }}
         - name: pushToImage
+                   
           uses: EDL/ActionTemplates/.github/actions/CommonSteps/pushToImage@master
           with:
              ${{ matrix.envNamesAndAccounts.env }} source.env
