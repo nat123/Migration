@@ -29,9 +29,11 @@ jobs:
         node-version: ['8.10.0']
         envNamesAndAccounts: [ {env: devl, account: CIS_DEVL_AWS_ACCT}, {env: prod,account: CIS_PROD_AWS_ACCT }]
     steps:
+        - name: checkout
         - uses: actions/checkout@v2
-          if: ${{ github.event.inputs.environment }} == 'devl'
+         
         - name: assumerole
+          if: ${{ github.event.inputs.environment }} == 'devl'
           uses: EDL/ActionTemplates/.github/actions/CommonSteps/assumeJenkinsRole@master
           with:
            accountNumber: 541843007032
