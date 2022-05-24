@@ -23,6 +23,7 @@ env:
     s3_prefix: templates/jd-us01-commoninformationservices-prod-system
 jobs:
    edl-dashboard-infra:
+    name: edl-dashboard-infra
     runs-on: prod-linux-edl
     strategy:
        matrix:
