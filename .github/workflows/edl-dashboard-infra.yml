@@ -24,7 +24,7 @@ env:
 jobs:
    edl-dashboard-infra:
     name: edl-dashboard-infra
-    runs-on: prod-linux-edl
+    runs-on: ubuntu-latest
     strategy:
        matrix:
         node-version: ['8.10.0']
