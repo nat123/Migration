@@ -30,7 +30,7 @@ jobs:
         envNamesAndAccounts: [ {env: devl, account: CIS_DEVL_AWS_ACCT}, {env: prod,account: CIS_PROD_AWS_ACCT }]
     steps:
         - name: checkout
-        - uses: actions/checkout@v2
+          uses: actions/checkout@v2
         - name: assumerole
           if: ${{ github.event.inputs.environment }} == 'devl'
           run:
