@@ -33,7 +33,7 @@ jobs:
         - name: checkout
           uses: actions/checkout@v2
         - name: assumerole
-          if: ${{ github.event.inputs.environment }} == 'devl'
+          if: ${{ github.event.inputs.environment }} =!'prod'
           run:
             echo "I am natasha"
         - name: pushToImage
