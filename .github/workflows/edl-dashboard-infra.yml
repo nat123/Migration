@@ -61,10 +61,11 @@ jobs:
         - name:  Push Nginx Image to ECR - if updated
           if: ${{ github.event.inputs.environment }} == 'devl'
         - uses: EDL/ActionTemplates/.github/actions/CommonSteps/unstashAndUnzip@master
+        - name: Policyupdate
         - run: |
             echo "policiesToUpdate = ["arn:aws:iam::${currentAccountNumber}:policy/datalake/files/edl-async-file-request-adapter-policy"]"
             echo "slaveIAMRole = "arn:aws:iam::${currentAccountNumber}:role/jenkins/appslave-jenkins-edl""
-        - uses: EDL/ActionTemplates/.github/actions/CommonSteps/setIamPoliciesToLatest@master
+        - name: pushTomaster
         - uses: EDL/ActionTemplates/.github/actions/CommonSteps/pushToImage@master
         - name: cloudCommonDeploy
           timeout-minutes: 15
