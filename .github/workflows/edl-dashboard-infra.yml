@@ -63,7 +63,7 @@ jobs:
             echo "slaveIAMRole = "arn:aws:iam::${currentAccountNumber}:role/jenkins/appslave-jenkins-edl""
         - name: pushTomaster
           run:  |
-            echo "EDL/ActionTemplates/.github/actions/CommonSteps/pushToImage@master
+            echo "EDL/ActionTemplates/.github/actions/CommonSteps/pushToImage@master"
         - name: vercodesca
           run: |
             echo "EDL/ActionTemplates/.github/actions/Veracodesca@master"
