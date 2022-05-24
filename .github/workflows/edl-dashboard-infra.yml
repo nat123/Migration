@@ -33,11 +33,11 @@ jobs:
         - name: checkout
           uses: actions/checkout@v2
         - name: assumerole
-          if: ${{ github.event.inputs.environment }} == 'devl'
+          if: github.event.inputs.environment == 'devl'
           run:
             echo "I am natasha"
         - name: pushToImage
-          # if: ${{ github.event.inputs.environment }} == 'devl' && ${{ github.event.inputs.environment }} == 'prod' }}
+          # if: github.event.inputs.environment == 'devl' &&  github.event.inputs.environment == 'prod' }}
           run: | 
              echo "push to image"
         - name: Setup Node.js ${{ matrix.node-version }}
@@ -53,7 +53,7 @@ jobs:
           run: |
             echo "EDL/ActionTemplates/.github/actions/CommonSteps/zipAndStash@master"
         - name:  Push Nginx Image to ECR - if updated
-          if: ${{ github.event.inputs.environment }} == 'devl'
+          if: github.event.inputs.environment == 'devl'
           run: |
             echo "EDL/ActionTemplates/.github/actions/CommonSteps/unstashAndUnzip@master"
         - name: Policyupdate
